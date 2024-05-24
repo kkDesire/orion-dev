@@ -1,0 +1,30 @@
+{
+  "name": "nuxt-app",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "db:generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "@nuxthub/core": "^0.5.18",
+    "drizzle-orm": "^0.30.10",
+    "nuxt": "^3.11.2",
+    "nuxt-auth-utils": "^0.0.25",
+    "vue": "^3.4.27",
+    "vue-router": "^4.3.2"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.18.1",
+    "drizzle-kit": "^0.21.4",
+    "eslint": "9.2.0",
+    "eslint-plugin-format": "^0.1.1",
+    "wrangler": "^3.57.1"
+  }
+}
