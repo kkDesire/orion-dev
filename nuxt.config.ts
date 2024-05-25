@@ -1,6 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  extends: ['@nuxt/ui-pro'],
+  modules: ['nuxt-auth-utils', '@nuxthub/core', '@nuxt/ui'],
   runtimeConfig: {
     oauth: {
       github: {
@@ -9,7 +11,6 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ['nuxt-auth-utils', '@nuxthub/core'],
   hub: {
     database: true,
   },

@@ -4,6 +4,11 @@ declare module '#auth-utils' {
     username: string
     avatarUrl: string
   }
+
+  interface Category {
+    name: string
+    slug: string
+  }
   interface UserSession { }
 }
 
