@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { Category } from '~/types'
 
-const { metaSymbol } = useShortcuts()
 definePageMeta({
   layout: 'admin',
   middleware: ['admin'],
@@ -68,9 +67,6 @@ defineShortcuts({
   '/': () => {
     input.value?.input.focus()
   },
-  'meta_k': () => {
-    isNewCategoryModalOpen.value = true
-  },
 })
 </script>
 
@@ -96,11 +92,9 @@ defineShortcuts({
             <UButton
               trailing-icon="i-heroicons-plus"
               color="gray"
+              label="New category"
               @click="isNewCategoryModalOpen = true"
-            >
-              <UKbd>{{ `${metaSymbol} + k` }}</UKbd>
-              New category
-            </UButton>
+            />
           </div>
         </template>
       </UDashboardNavbar>

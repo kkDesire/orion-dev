@@ -7,12 +7,10 @@ function _useDashboard() {
   const isNotificationsSlideoverOpen = ref(false)
 
   defineShortcuts({
-    'g-h': () => router.push('/'),
-    'g-i': () => router.push('/inbox'),
-    'g-u': () => router.push('/users'),
-    'g-s': () => router.push('/settings'),
+    'g-a': () => router.push('/admin'),
+    'g-c': () => router.push('/admin/categories'),
+    'g-u': () => router.push('/admin/users'),
     '?': () => isHelpSlideoverOpen.value = true,
-    'n': () => isNotificationsSlideoverOpen.value = true,
   })
 
   watch(() => route.fullPath, () => {
