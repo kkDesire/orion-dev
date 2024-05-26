@@ -30,7 +30,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     if (result) {
       toast.add({
         icon: 'i-heroicons-check-circle',
-        title: 'Category created',
+        title: `Category "${event.data.name}" has been created`,
         color: 'green',
       })
       emits('close')
@@ -40,8 +40,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   }
   catch (e) {
     loading.value = false
-    console.error('error', e)
-    toast.add({ icon: 'i-heroicons-exclamation-circle', title: 'Error', color: 'red' })
+    if (e instanceof Error) {
+      toast.add({
+        icon: 'i-heroicons-exclamation-circle',
+        title: 'Error',
+        description: e.message,
+        color: 'red',
+      })
+    }
   }
 }
 </script>
@@ -53,9 +59,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     </UFormGroup>
     <div class="flex justify-end gap-3">
       <UButton label="Cancel" color="gray" variant="ghost" @click="emits('close')" />
-      <UButton :loading="loading" type="submit" label="Save" color="primary" />
+      <UButton :loading="loading" type="submit" label="Add category" color="primary" />
     </div>
   </UForm>
 </template>
-
-<style></style>
