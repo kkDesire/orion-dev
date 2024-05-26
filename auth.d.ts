@@ -6,6 +6,7 @@ declare module '#auth-utils' {
   }
 
   interface Category {
+    id: number
     name: string
     slug: string
   }
