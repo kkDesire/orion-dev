@@ -1,0 +1,1 @@
+UPDATE users SET role_type='creator' WHERE id = 1

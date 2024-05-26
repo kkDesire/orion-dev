@@ -4,7 +4,7 @@ export default oauth.githubEventHandler({
   },
   async onSuccess(event, { user }) {
     const db = useDrizzle()
-    await db.insert(tables.users).values({
+    const saveUser = await db.insert(tables.users).values({
       githubId: user.id,
       username: user.login,
       avatarUrl: user.avatar_url,
@@ -14,12 +14,14 @@ export default oauth.githubEventHandler({
         username: user.login,
         avatarUrl: user.avatar_url,
       },
-    })
+    }).returning().get()
+
     await setUserSession(event, {
       user: {
-        githubId: user.id,
-        username: user.login,
-        avatarUrl: user.avatar_url,
+        githubId: saveUser.githubId,
+        username: saveUser.username,
+        avatarUrl: saveUser.avatarUrl,
+        roleType: saveUser.roleType,
       },
     })
     return sendRedirect(event, '/')

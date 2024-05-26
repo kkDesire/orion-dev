@@ -3,6 +3,7 @@ declare module '#auth-utils' {
     githubId: number
     username: string
     avatarUrl: string
+    roleType: 'admin' | 'creator' | null
   }
 
   interface Category {

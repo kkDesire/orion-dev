@@ -1,7 +1,9 @@
 import { z } from 'zod'
 import { eq } from 'drizzle-orm'
+import { requireAdminUser } from '~/server/utils/session'
 
 export default defineEventHandler(async (event) => {
+  await requireAdminUser(event)
   const db = useDrizzle()
   const body = await readValidatedBody(event, z.object({
     name: z.string().min(1, 'Name is required'),

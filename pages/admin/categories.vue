@@ -4,6 +4,7 @@ import type { Category } from '~/types'
 const { metaSymbol } = useShortcuts()
 definePageMeta({
   layout: 'admin',
+  middleware: ['admin'],
 })
 
 const defaultColumns = [
@@ -76,7 +77,7 @@ defineShortcuts({
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Categories">
+      <UDashboardNavbar title="Categories" :badge="categories.length">
         <template #right>
           <div class="flex gap-3">
             <UInput

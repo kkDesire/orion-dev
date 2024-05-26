@@ -6,6 +6,9 @@ const { loggedIn, user, clear } = useUserSession()
   <div v-if="loggedIn">
     <h1>Welcome {{ user.username }}!</h1>
     <img :src="user.avatarUrl" alt="Avatar">
+    <NuxtLink to="/admin/categories">
+      Categories
+    </NuxtLink>
     <button @click="clear">
       Logout
     </button>
