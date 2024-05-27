@@ -10,6 +10,7 @@ function _useDashboard() {
     'g-a': () => router.push('/admin'),
     'g-c': () => router.push('/admin/categories'),
     'g-u': () => router.push('/admin/users'),
+    'g-m': () => router.push('/admin/modules'),
     '?': () => isHelpSlideoverOpen.value = true,
   })
 

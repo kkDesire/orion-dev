@@ -22,6 +22,16 @@ const links = [
     },
   },
   {
+    id: 'modules',
+    label: 'Modules',
+    icon: 'i-heroicons-archive-box',
+    to: '/admin/modules',
+    tooltip: {
+      text: 'Modules',
+      shortcuts: ['G', 'M'],
+    },
+  },
+  {
     id: 'users',
     label: 'Users',
     icon: 'i-heroicons-user-group',
