@@ -34,6 +34,7 @@ const columns = computed(() =>
 )
 const { data: users, pending } = await useFetch<any>('/api/users', {
   deep: false,
+  lazy: true,
 })
 
 defineShortcuts({

@@ -36,6 +36,7 @@ const columns = computed(() =>
 )
 const { data: categories, pending, refresh } = await useFetch<any>('/api/categories', {
   deep: false,
+  lazy: true,
 })
 
 async function handleCloseModal() {
