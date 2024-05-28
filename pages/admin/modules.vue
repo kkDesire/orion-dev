@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { Module } from '~/server/utils/drizzle'
+
 definePageMeta({
   layout: 'admin',
   middleware: ['admin'],
@@ -15,8 +17,12 @@ const defaultColumns = [
     sortable: true,
   },
   {
-    key: 'slug',
-    label: 'Slug',
+    key: 'icon',
+    label: 'Icon',
+  },
+  {
+    key: 'repo',
+    label: 'Repo',
   },
   {
     key: 'type',
@@ -29,10 +35,47 @@ const columns = computed(() =>
 )
 
 const q = ref('')
+const fetch_module_loading = ref<boolean>(false)
 const input = ref<{ input: HTMLInputElement }>()
-const modules = ref<any[]>([])
-const pending = ref<boolean>(false)
+const toast = useToast()
 
+const { data: modules, pending, refresh } = await useFetch<Module[]>(
+  '/api/modules/fetch',
+  {
+    deep: false,
+    lazy: true,
+    default: () => [],
+  },
+)
+
+async function fetchModules() {
+  fetch_module_loading.value = true
+  try {
+    await $fetch('/api/modules/fetch', {
+      method: 'POST',
+    })
+
+    toast.add({
+      icon: 'i-heroicons-check-circle',
+      title: 'Modules has been fetched',
+      color: 'green',
+    })
+    fetch_module_loading.value = false
+
+    await refresh()
+  }
+  catch (e) {
+    fetch_module_loading.value = false
+    if (e instanceof Error) {
+      toast.add({
+        icon: 'i-heroicons-exclamation-circle',
+        title: 'Error',
+        description: e.message,
+        color: 'red',
+      })
+    }
+  }
+}
 defineShortcuts({
   '/': () => {
     input.value?.input.focus()
@@ -44,6 +87,16 @@ defineShortcuts({
   <UDashboardPage>
     <UDashboardPanel grow>
       <UDashboardNavbar title="Modules" :badge="modules.length">
+        <template #left>
+          <div>
+            <UButton
+              trailing-icon="i-heroicons-arrow-path"
+              color="gray"
+              label="Refresh"
+              @click="refresh"
+            />
+          </div>
+        </template>
         <template #right>
           <div class="flex gap-3">
             <UInput
@@ -59,6 +112,13 @@ defineShortcuts({
                 <UKbd value="/" />
               </template>
             </UInput>
+            <UButton
+              :loading="fetch_module_loading"
+              trailing-icon="i-heroicons-server-stack"
+              color="gray"
+              label="Fetch modules"
+              @click="fetchModules"
+            />
           </div>
         </template>
       </UDashboardNavbar>
@@ -77,9 +137,23 @@ defineShortcuts({
           </USelectMenu>
         </template>
       </UDashboardToolbar>
-      <UTable :columns="columns" :rows="modules" :loading="pending" />
+      <UTable :columns="columns" :rows="modules" :loading="pending">
+        <template #image-data="{ row }">
+          <img
+            :src="row.avatarUrl"
+            class="w-10 h-10 rounded-full"
+            :alt="`${row.username} Avatar`"
+          >
+        </template>
+        <template #type-data="{ row }">
+          <UBadge
+            :label="row.type"
+            :color="row.type === 'official' ? 'green' : 'blue'"
+            variant="subtle"
+            class="capitalize"
+          />
+        </template>
+      </UTable>
     </UDashboardPanel>
   </UDashboardPage>
 </template>
-
-<style scoped></style>

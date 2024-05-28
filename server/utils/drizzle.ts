@@ -10,4 +10,6 @@ export function useDrizzle() {
   return drizzle(hubDatabase(), { schema })
 }
 
+export type Category = typeof schema.categories.$inferSelect
+export type Module = typeof schema.modules.$inferSelect
 export type User = typeof schema.users.$inferSelect

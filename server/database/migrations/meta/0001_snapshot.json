@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "91d88012-967f-48e0-8273-045e49c66106",
-  "prevId": "da236f8e-78e2-4bb8-9cbb-3b03cb8101b8",
+  "id": "9ad0366d-2c5e-4fff-bf6c-4b9cd376ee88",
+  "prevId": "ef800fc0-7be6-4b44-afd1-9f13023c6510",
   "tables": {
     "categories": {
       "name": "categories",
@@ -34,6 +34,65 @@
           "name": "categories_slug_unique",
           "columns": [
             "slug"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "modules": {
+      "name": "modules",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "repo": {
+          "name": "repo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "icon": {
+          "name": "icon",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "modules_name_unique": {
+          "name": "modules_name_unique",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        },
+        "modules_repo_unique": {
+          "name": "modules_repo_unique",
+          "columns": [
+            "repo"
           ],
           "isUnique": true
         }
