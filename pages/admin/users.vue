@@ -88,7 +88,7 @@ defineShortcuts({
         <template #roleType-data="{ row }">
           <UBadge
             :label="row.roleType"
-            :color="row.roleType === 'admin' ? 'amber' : 'green'"
+            :color="row.roleType === 'admin' ? 'blue' : 'primary'"
             variant="subtle"
             class="capitalize"
           />

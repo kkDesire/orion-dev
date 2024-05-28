@@ -6,19 +6,24 @@ definePageMeta({
   middleware: ['admin'],
 })
 
+useSeoMeta({
+  title: 'Modules',
+})
+
 const defaultColumns = [
   {
     key: 'id',
     label: '#',
-  },
-  {
-    key: 'name',
-    label: 'Name',
     sortable: true,
   },
   {
     key: 'icon',
     label: 'Icon',
+  },
+  {
+    key: 'name',
+    label: 'Name',
+    sortable: true,
   },
   {
     key: 'repo',
@@ -27,6 +32,7 @@ const defaultColumns = [
   {
     key: 'type',
     label: 'Type',
+    sortable: true,
   },
 ]
 const selectedColumns = ref(defaultColumns)
@@ -87,16 +93,6 @@ defineShortcuts({
   <UDashboardPage>
     <UDashboardPanel grow>
       <UDashboardNavbar title="Modules" :badge="modules.length">
-        <template #left>
-          <div>
-            <UButton
-              trailing-icon="i-heroicons-arrow-path"
-              color="gray"
-              label="Refresh"
-              @click="refresh"
-            />
-          </div>
-        </template>
         <template #right>
           <div class="flex gap-3">
             <UInput
@@ -124,26 +120,36 @@ defineShortcuts({
       </UDashboardNavbar>
       <UDashboardToolbar>
         <template #right>
-          <USelectMenu
-            v-model="selectedColumns"
-            icon="i-heroicons-adjustments-horizontal-solid"
-            :options="defaultColumns"
-            multiple
-            class="hidden lg:block"
-          >
-            <template #label>
-              Display
-            </template>
-          </USelectMenu>
+          <div class="flex gap-3">
+            <UButton
+              trailing-icon="i-heroicons-arrow-path"
+              color="gray"
+              label="Refresh"
+              @click="refresh"
+            />
+            <USelectMenu
+              v-model="selectedColumns"
+              icon="i-heroicons-adjustments-horizontal-solid"
+              :options="defaultColumns"
+              multiple
+              class="hidden lg:block"
+            >
+              <template #label>
+                Display
+              </template>
+            </USelectMenu>
+          </div>
         </template>
       </UDashboardToolbar>
       <UTable :columns="columns" :rows="modules" :loading="pending">
-        <template #image-data="{ row }">
+        <template #icon-data="{ row }">
           <img
-            :src="row.avatarUrl"
-            class="w-10 h-10 rounded-full"
-            :alt="`${row.username} Avatar`"
+            v-if="row.icon"
+            :src="`https://raw.githubusercontent.com/nuxt/modules/main/icons/${row.icon}`"
+            class="w-10 h-auto rounded"
+            :alt="`${row.icon} Avatar`"
           >
+          <span v-else class="i-heroicons-photo inline-block w-10 h-10 rounded" />
         </template>
         <template #type-data="{ row }">
           <UBadge
