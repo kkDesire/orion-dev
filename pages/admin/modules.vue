@@ -44,12 +44,14 @@ const q = ref('')
 const fetch_module_loading = ref<boolean>(false)
 const input = ref<{ input: HTMLInputElement }>()
 const toast = useToast()
-
 const { data: modules, pending, refresh } = await useFetch<Module[]>(
   '/api/modules/fetch',
   {
     deep: false,
     lazy: true,
+    params: {
+      q: computed(() => q.value),
+    },
     default: () => [],
   },
 )
