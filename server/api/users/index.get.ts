@@ -5,7 +5,8 @@ export default defineEventHandler(async (event) => {
   const users = await db.select({
     id: tables.users.id,
     githubId: tables.users.githubId,
-    username: tables.users.username,
+    login: tables.users.login,
+    name: tables.users.name,
     avatarUrl: tables.users.avatarUrl,
     roleType: tables.users.roleType,
   }).from(tables.users)

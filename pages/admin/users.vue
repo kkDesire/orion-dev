@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { User } from '~/server/utils/drizzle'
+
 definePageMeta({
   middleware: ['admin'],
   layout: 'admin',
@@ -15,13 +17,17 @@ const defaultColumns = [
     label: '#',
   },
   {
+    key: 'name',
+    label: 'Name',
+  },
+  {
     key: 'githubId',
     label: 'Github ID',
     sortable: true,
   },
   {
-    key: 'username',
-    label: 'Username',
+    key: 'login',
+    label: 'Login',
   },
   {
     key: 'roleType',
@@ -32,9 +38,10 @@ const selectedColumns = ref(defaultColumns)
 const columns = computed(() =>
   defaultColumns.filter(column => selectedColumns.value.includes(column)),
 )
-const { data: users, pending } = await useFetch<any>('/api/users', {
+const { data: users, pending } = await useFetch<User[]>('/api/users', {
   deep: false,
   lazy: true,
+  default: () => [],
 })
 
 defineShortcuts({
@@ -63,6 +70,7 @@ defineShortcuts({
                 <UKbd value="/" />
               </template>
             </UInput>
+            <RefreshButton :loading="pending" @click="refresh" />
           </div>
         </template>
       </UDashboardNavbar>
@@ -97,5 +105,3 @@ defineShortcuts({
     </UDashboardPanel>
   </UDashboardPage>
 </template>
-
-<style></style>

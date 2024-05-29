@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "ef800fc0-7be6-4b44-afd1-9f13023c6510",
+  "id": "dff0eba1-437c-4d85-a465-5bf815746431",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "categories": {
@@ -23,6 +23,20 @@
         },
         "name": {
           "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -59,6 +73,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "repo": {
+          "name": "repo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "type": {
           "name": "type",
           "type": "text",
@@ -72,6 +93,20 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {
@@ -79,6 +114,13 @@
           "name": "modules_name_unique",
           "columns": [
             "name"
+          ],
+          "isUnique": true
+        },
+        "modules_repo_unique": {
+          "name": "modules_repo_unique",
+          "columns": [
+            "repo"
           ],
           "isUnique": true
         }
@@ -104,11 +146,25 @@
           "notNull": true,
           "autoincrement": false
         },
-        "username": {
-          "name": "username",
+        "email": {
+          "name": "email",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "login": {
+          "name": "login",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "avatar_url": {
@@ -125,6 +181,20 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'creator'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {
@@ -132,6 +202,20 @@
           "name": "users_github_id_unique",
           "columns": [
             "github_id"
+          ],
+          "isUnique": true
+        },
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "columns": [
+            "email"
+          ],
+          "isUnique": true
+        },
+        "users_login_unique": {
+          "name": "users_login_unique",
+          "columns": [
+            "login"
           ],
           "isUnique": true
         }

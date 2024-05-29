@@ -96,39 +96,18 @@ defineShortcuts({
     <UDashboardPanel grow>
       <UDashboardNavbar title="Modules" :badge="modules.length">
         <template #right>
-          <div class="flex gap-3">
-            <UInput
-              ref="input"
-              v-model="q"
-              icon="i-heroicons-funnel"
-              autocomplete="off"
-              placeholder="Filter users..."
-              class="hidden lg:block"
-              @keydown.esc="$event.target.blur()"
-            >
-              <template #trailing>
-                <UKbd value="/" />
-              </template>
-            </UInput>
-            <UButton
-              :loading="fetch_module_loading"
-              trailing-icon="i-heroicons-server-stack"
-              color="gray"
-              label="Fetch modules"
-              @click="fetchModules"
-            />
-          </div>
+          <UButton
+            :loading="fetch_module_loading"
+            color="gray"
+            label="Fetch modules"
+            @click="fetchModules"
+          />
+          <RefreshButton :loading="pending" @click="refresh" />
         </template>
       </UDashboardNavbar>
       <UDashboardToolbar>
         <template #right>
           <div class="flex gap-3">
-            <UButton
-              trailing-icon="i-heroicons-arrow-path"
-              color="gray"
-              label="Refresh"
-              @click="refresh"
-            />
             <USelectMenu
               v-model="selectedColumns"
               icon="i-heroicons-adjustments-horizontal-solid"

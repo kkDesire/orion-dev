@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Category } from '~/types'
+import type { Category } from '~/server/utils/drizzle'
 
 definePageMeta({
   layout: 'admin',
@@ -25,7 +25,6 @@ const defaultColumns = [
   },
 ]
 
-const q = ref('')
 const isNewCategoryModalOpen = ref<boolean>(false)
 const isEditCategoryModalOpen = ref<boolean>(false)
 const input = ref<{ input: HTMLInputElement }>()
@@ -34,9 +33,10 @@ const editCategory = ref<Category | null>(null)
 const columns = computed(() =>
   defaultColumns.filter(column => selectedColumns.value.includes(column)),
 )
-const { data: categories, pending, refresh } = await useFetch<any>('/api/categories', {
+const { data: categories, pending, refresh } = await useFetch<Category[]>('/api/categories', {
   deep: false,
   lazy: true,
+  default: () => [],
 })
 
 async function handleCloseModal() {
@@ -76,27 +76,16 @@ defineShortcuts({
     <UDashboardPanel grow>
       <UDashboardNavbar title="Categories" :badge="categories.length">
         <template #right>
-          <div class="flex gap-3">
-            <UInput
-              ref="input"
-              v-model="q"
-              icon="i-heroicons-funnel"
-              autocomplete="off"
-              placeholder="Filter users..."
-              class="hidden lg:block"
-              @keydown.esc="$event.target.blur()"
-            >
-              <template #trailing>
-                <UKbd value="/" />
-              </template>
-            </UInput>
-            <UButton
-              trailing-icon="i-heroicons-plus"
-              color="gray"
-              label="New category"
-              @click="isNewCategoryModalOpen = true"
-            />
-          </div>
+          <UButton
+            trailing-icon="i-heroicons-plus"
+            color="gray"
+            label="New category"
+            @click="isNewCategoryModalOpen = true"
+          />
+          <RefreshButton
+            :loading="pending"
+            @click="refresh"
+          />
         </template>
       </UDashboardNavbar>
       <UDashboardToolbar>
