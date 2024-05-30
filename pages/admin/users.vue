@@ -38,7 +38,7 @@ const selectedColumns = ref(defaultColumns)
 const columns = computed(() =>
   defaultColumns.filter(column => selectedColumns.value.includes(column)),
 )
-const { data: users, pending } = await useFetch<User[]>('/api/users', {
+const { data: users, pending, refresh } = await useFetch<User[]>('/api/users', {
   deep: false,
   lazy: true,
   default: () => [],
@@ -91,7 +91,8 @@ defineShortcuts({
       </UDashboardToolbar>
       <UTable :columns="columns" :rows="users" :loading="pending">
         <template #image-data="{ row }">
-          <img :src="row.avatarUrl" class="w-10 h-10 rounded-full" :alt="`${row.username} Avatar`">
+          <img v-if="row.avatarUrl" :src="row.avatarUrl" class="w-10 h-10 rounded" :alt="`${row.username} Avatar`">
+          <span v-else class="i-heroicons-photo inline-block w-10 h-10 rounded" />
         </template>
         <template #roleType-data="{ row }">
           <UBadge
