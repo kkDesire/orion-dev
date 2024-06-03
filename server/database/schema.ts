@@ -1,5 +1,6 @@
 import { relations } from 'drizzle-orm'
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { PAID_STATUS, ROLE_TYPE, STATUS } from '../utils/contants'
 
 export const users = sqliteTable('users', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -8,7 +9,7 @@ export const users = sqliteTable('users', {
   login: text('login').notNull().unique(),
   name: text('name'),
   avatarUrl: text('avatar_url').notNull(),
-  roleType: text('role_type', { enum: ['admin', 'creator'] }).default('creator'),
+  roleType: text('role_type', { enum: ROLE_TYPE }).default('creator'),
   createdAt: text('created_at').notNull().$defaultFn(() => sql`(current_timestamp)`),
   updatedAt: text('updated_at').notNull().$defaultFn(() => sql`(current_timestamp)`).$onUpdateFn(() => sql`(current_timestamp)`),
 })
@@ -41,13 +42,13 @@ export const templates = sqliteTable('templates', {
    * Refused: when a user's template is refused by an admin
    * Validate: when a user's template is validated by an admin and visible by everyone
    */
-  status: text('status', { enum: ['submitted', 'refused', 'validate'] }).notNull(),
-  paidStatus: text('paid_status', { enum: ['free', 'paid'] }).notNull().default('free'),
+  status: text('status', { enum: STATUS }).notNull().default('submitted'),
+  paidStatus: text('paid_status', { enum: PAID_STATUS }).notNull().default('free'),
   liveUrl: text('live_url'),
   accessUrl: text('access_url').notNull(),
   description: text('description').notNull(),
-  userId: integer('user_id').references(() => users.id),
-  categoryId: integer('category_id').references(() => categories.id),
+  userId: integer('user_id').notNull().references(() => users.id),
+  categoryId: integer('category_id').notNull().references(() => categories.id),
   createdAt: text('created_at').notNull().$defaultFn(() => sql`(current_timestamp)`),
   updatedAt: text('updated_at').notNull().$defaultFn(() => sql`(current_timestamp)`).$onUpdateFn(() => sql`(current_timestamp)`),
 })

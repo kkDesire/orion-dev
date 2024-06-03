@@ -2,6 +2,6 @@
 
 <template>
   <div>
-    Wemcome
+    <TemplatesCreateForm />
   </div>
 </template>

@@ -9,10 +9,11 @@ export default oauth.githubEventHandler({
     const githubId = ghUser.id
 
     const db = useDrizzle()
-    const user = await db.select().from(tables.users).where(eq(tables.users.githubId, githubId)).get()
+    let user: User | undefined
+    user = await db.select().from(tables.users).where(eq(tables.users.githubId, githubId)).get()
 
     if (!user || userDataChanged(user, ghUser)) {
-      await db.insert(tables.users).values({
+      user = await db.insert(tables.users).values({
         githubId,
         login: ghUser.login,
         email: ghUser.email,
@@ -26,16 +27,17 @@ export default oauth.githubEventHandler({
           name: ghUser.name,
           avatarUrl: ghUser.avatar_url,
         },
-      }).execute()
+      }).returning().get()
     }
 
     await setUserSession(event, {
       user: {
+        id: user.id!,
         login: ghUser.login,
         email: ghUser.email,
         name: ghUser.name,
         avatarUrl: ghUser.avatar_url,
-        roleType: user?.roleType || 'creator',
+        roleType: user.roleType || 'creator',
       },
     })
     return sendRedirect(event, '/portal')

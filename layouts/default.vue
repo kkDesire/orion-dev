@@ -4,12 +4,12 @@ const { user, loggedIn, clear } = useUserSession()
 const socials = [{
   title: 'X',
   icon: 'i-simple-icons-x',
-  to: 'https://x.soubiran.dev',
+  to: 'https://x.com/KouamDesire07',
   target: '_blank',
 }, {
   title: 'GitHub',
-  icon: 'i-simple-icons-github',
-  to: 'https://gh.soubiran.dev',
+  icon: 'grommet-icons:github',
+  to: 'https://github.com/kkDesire',
   target: '_blank',
 }]
 
@@ -51,6 +51,7 @@ if (user.value?.roleType === 'admin') {
           variant="ghost"
           color="gray"
         />
+        <UColorModeButton />
         <UButton
           v-if="!loggedIn"
           to="/auth/github"
@@ -87,7 +88,7 @@ if (user.value?.roleType === 'admin') {
 
     <UFooter
       class="py-12"
-      :ui="{ bottom: { container: 'flex flex-col lg:flex-row lg:items-start', left: 'mt-0', right: 'mt-12 order-3 lg:mt-0 flex flex-col justify-center lg:items-end lg:justify-start gap-2', center: 'mt-0' } }"
+      :ui="{ bottom: { wrapper: 'flex flex-col lg:flex-row', container: 'flex flex-col lg:flex-row lg:items-start', left: 'mt-0', right: 'mt-12 order-3 lg:mt-0 flex flex-col justify-center lg:items-end lg:justify-start gap-2', center: 'mt-0' } }"
     >
       <template #left>
         <div class="flex flex-col gap-2">
