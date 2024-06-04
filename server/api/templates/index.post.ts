@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { useHash } from '~/server/utils/hash'
+import { useMarkdownToHTML } from '~/server/utils/markdown'
 
 export default defineEventHandler(async (event) => {
   const db = useDrizzle()
@@ -10,7 +11,7 @@ export default defineEventHandler(async (event) => {
     paidStatus: z.enum(['free', 'paid']),
     liveUrl: z.string().optional(),
     accessUrl: z.string(),
-    description: z.string(),
+    description: z.string().max(1000),
     categoryId: z.number(),
   }).parse)
 
@@ -22,6 +23,7 @@ export default defineEventHandler(async (event) => {
     liveUrl: body.liveUrl,
     accessUrl: body.accessUrl,
     description: body.description,
+    descriptionHTML: useMarkdownToHTML(body.description),
     categoryId: body.categoryId,
     userId: user.id,
   })

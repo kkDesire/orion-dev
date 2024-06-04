@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     .select({
       id: tables.templates.id,
       title: tables.templates.title,
-      description: tables.templates.description,
+      description: tables.templates.descriptionHTML,
       status: tables.templates.status,
       paidStatus: tables.templates.paidStatus,
       liveUrl: tables.templates.liveUrl,

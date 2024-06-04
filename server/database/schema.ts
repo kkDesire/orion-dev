@@ -46,6 +46,7 @@ export const templates = sqliteTable('templates', {
   paidStatus: text('paid_status', { enum: PAID_STATUS }).notNull().default('free'),
   liveUrl: text('live_url'),
   accessUrl: text('access_url').notNull(),
+  descriptionHTML: text('description_html').notNull(),
   description: text('description').notNull(),
   userId: integer('user_id').notNull().references(() => users.id),
   categoryId: integer('category_id').notNull().references(() => categories.id),

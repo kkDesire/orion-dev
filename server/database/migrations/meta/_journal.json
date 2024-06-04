@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1717018357017,
-      "tag": "0000_hard_iron_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1717061838999,
-      "tag": "0001_normal_morlun",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1717437080841,
-      "tag": "0002_tiresome_agent_zero",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1717454200659,
-      "tag": "0003_boring_arclight",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1717454268889,
-      "tag": "0004_silky_nicolaos",
+      "when": 1717542680449,
+      "tag": "0000_remarkable_tana_nile",
       "breakpoints": true
     }
   ]
