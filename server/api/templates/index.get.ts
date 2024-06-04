@@ -1,25 +1,31 @@
 export default defineEventHandler(async () => {
   const db = useDrizzle()
 
-  const templates = await db.select().from(tables.templates)
-  const populatedTemplate = await Promise.all(
-    templates.map(async (template) => {
-      const category = await db
-        .select({ name: tables.categories.name })
-        .from(tables.categories)
-        .where(eq(tables.categories.id, template.categoryId))
-        .get()
-      const user = await db
-        .select().from(tables.users)
-        .where(eq(tables.users.id, template.userId))
-        .get()
-      return {
-        ...template,
-        category,
-        user,
-      }
-    }),
-  )
+  const templates = await db.select({
+    id: tables.templates.id,
+    title: tables.templates.title,
+    description: tables.templates.description,
+    status: tables.templates.status,
+    paidStatus: tables.templates.paidStatus,
+    liveUrl: tables.templates.liveUrl,
+    accessUrl: tables.templates.accessUrl,
+    user: {
+      name: tables.users.name,
+      login: tables.users.login,
+      avatarUrl: tables.users.avatarUrl,
+    },
+    category: {
+      /**
+       * The `name` field is aliased to `c_name` to avoid
+       * conflicts with the `name` field from the `tamplate` table. Issue in D1
+       *
+       * https://github.com/cloudflare/workers-sdk/issues/3160
+       */
+      name: sql<string>`${tables.categories.name}`.as('c_name'),
+    },
+  }).from(tables.templates)
+    .leftJoin(tables.users, eq(tables.templates.userId, tables.users.id))
+    .leftJoin(tables.categories, eq(tables.templates.categoryId, tables.categories.id))
 
-  return populatedTemplate
+  return templates
 })
