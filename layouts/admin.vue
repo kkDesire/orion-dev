@@ -32,6 +32,16 @@ const links = [
     },
   },
   {
+    id: 'templates',
+    label: 'Templates',
+    icon: 'i-heroicons-rectangle-group',
+    to: '/admin/templates',
+    tooltip: {
+      text: 'Templates',
+      shortcuts: ['G', 'T'],
+    },
+  },
+  {
     id: 'users',
     label: 'Users',
     icon: 'i-heroicons-user-group',

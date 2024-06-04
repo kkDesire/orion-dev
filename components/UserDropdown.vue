@@ -31,7 +31,7 @@ const items = computed(() => [
         color="gray"
         variant="ghost"
         class="w-full"
-        :label="user?.username"
+        :label="user?.name ?? user?.login"
         :class="[open && 'bg-gray-50 dark:bg-gray-800']"
       >
         <template #leading>
@@ -54,12 +54,10 @@ const items = computed(() => [
         <p>
           Signed in as
         </p>
-        <p class="truncate font-medium text-gray-900 dark:text-white">
-          {{ user?.username }}
+        <p v-if="user" class="truncate font-medium text-gray-900 dark:text-white">
+          {{ user.name ?? user.login }}
         </p>
       </div>
     </template>
   </UDropdown>
 </template>
-
-<style></style>

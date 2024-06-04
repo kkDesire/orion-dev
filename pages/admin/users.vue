@@ -9,12 +9,13 @@ const q = ref('')
 const input = ref<{ input: HTMLInputElement }>()
 const defaultColumns = [
   {
-    key: 'image',
-    label: 'Avatar',
-  },
-  {
     key: 'id',
     label: '#',
+    sortable: true,
+  },
+  {
+    key: 'login',
+    label: 'Avatar',
   },
   {
     key: 'name',
@@ -24,10 +25,6 @@ const defaultColumns = [
     key: 'githubId',
     label: 'Github ID',
     sortable: true,
-  },
-  {
-    key: 'login',
-    label: 'Login',
   },
   {
     key: 'roleType',
@@ -90,9 +87,16 @@ defineShortcuts({
         </template>
       </UDashboardToolbar>
       <UTable :columns="columns" :rows="users" :loading="pending">
-        <template #image-data="{ row }">
-          <img v-if="row.avatarUrl" :src="row.avatarUrl" class="w-10 h-10 rounded" :alt="`${row.username} Avatar`">
-          <span v-else class="i-heroicons-photo inline-block w-10 h-10 rounded" />
+        <template #login-data="{ row }">
+          <div class="flex flex-row items-center gap-2">
+            <img
+              v-if="row.avatarUrl"
+              :src="row.avatarUrl"
+              class="w-6 h-6 rounded-full"
+              :alt="`${row.username} Avatar`"
+            >
+            <span>{{ row.login }}</span>
+          </div>
         </template>
         <template #roleType-data="{ row }">
           <UBadge

@@ -11,6 +11,7 @@ function _useDashboard() {
     'g-c': () => router.push('/admin/categories'),
     'g-u': () => router.push('/admin/users'),
     'g-m': () => router.push('/admin/modules'),
+    'g-t': () => router.push('/admin/templates'),
     '?': () => isHelpSlideoverOpen.value = true,
   })
 
