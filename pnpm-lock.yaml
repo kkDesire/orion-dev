@@ -54,6 +54,9 @@ importers:
       '@iconify-json/simple-icons':
         specifier: ^1.1.104
         version: 1.1.104
+      '@iconify/json':
+        specifier: ^2.2.216
+        version: 2.2.216
       drizzle-kit:
         specifier: ^0.21.4
         version: 0.21.4
@@ -1157,6 +1160,9 @@ packages:
 
   '@iconify/collections@1.0.425':
     resolution: {integrity: sha512-Mf9yNN4v5bi0tHyBHRUCn2Hr+RZ2bBXF1scZgPY2RJqjYI32WmGPocsKxV01bSuI24Fk3Nw3BXpe9BZnHyZmYQ==}
+
+  '@iconify/json@2.2.216':
+    resolution: {integrity: sha512-dS2yVIAel1oIAGnaxR+EJyDRjKV9GGm9tUd8Pd8VEF91HB4HJrsMzkvz23GHDWyIITGdinx4ZUjMz3hOAv+D4Q==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -6712,6 +6718,11 @@ snapshots:
   '@iconify/collections@1.0.425':
     dependencies:
       '@iconify/types': 2.0.0
+
+  '@iconify/json@2.2.216':
+    dependencies:
+      '@iconify/types': 2.0.0
+      pathe: 1.1.2
 
   '@iconify/types@2.0.0': {}
 

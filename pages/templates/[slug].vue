@@ -10,7 +10,7 @@ const { data: template } = await useFetch(`/api/templates/${hash.value}`, {
 </script>
 
 <template>
-  <div>{{ template }}</div>
+  <pre>{{ template }}</pre>
 </template>
 
 <style scoped>
