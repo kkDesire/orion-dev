@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
-import { PAID_STATUS } from '~/server/utils/contants'
-import 'easymde/dist/easymde.min.css'
+import 'quill/dist/quill.snow.css'
+import '~/assets/css/quill.css'
 
 const toast = useToast()
 const loading = ref<boolean>(false)
@@ -14,16 +14,27 @@ const schema = z.object({
   liveUrl: z.string().optional(),
   accessUrl: z.string({ message: 'Access URL is required' }),
   description: z.string({ message: 'Description is required' }),
+  shortDescription: z.string().optional(),
 })
 
 type Schema = z.output<typeof schema>
+const form = ref()
 
-const state = reactive({
+const state = reactive<{
+  title: string | undefined
+  paidStatus: typeof PAID_STATUS[number] | undefined
+  categoryId: string | undefined
+  liveUrl: string | undefined
+  accessUrl: string | undefined
+  shortDescription: string
+  description: string
+}>({
   title: undefined,
   categoryId: undefined,
   paidStatus: undefined,
   liveUrl: undefined,
   accessUrl: undefined,
+  shortDescription: '',
   description: '',
 })
 
@@ -58,64 +69,131 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   }
 }
 
-const options = [
-  {
-    value: 'free',
-    label: 'Free',
-  },
-  {
-    value: 'paid',
-    label: 'Paid',
-  },
-]
+const isPremium = computed(() => state.paidStatus === 'premium')
+
 const { data: categories } = await useFetch('/api/categories', {
   deep: false,
   default: () => [],
 })
+const quill = useQuill()
 
-onMounted(async () => {
-  const EasyMDE = await import('easymde').then(m => m.default)
-  const easyMDE = new EasyMDE()
-  easyMDE.codemirror.on('change', () => {
-    state.description = easyMDE.value()
+async function onReset() {
+  form.value.clear()
+  state.description = ''
+  state.categoryId = undefined
+  if (quill.value)
+    quill.value.setText('')
+}
+
+watch(quill, () => {
+  quill.value?.on('text-change', (_, __, source) => {
+    if (source === 'api') {
+      state.description = quill.value?.root.innerHTML ?? ''
+      form.value.validate('description', { silent: true })
+    }
   })
 })
 </script>
 
 <template>
-  <UForm :schema="schema" :state="state" @submit="onSubmit">
+  <UForm
+    ref="form"
+    class="flex flex-col gap-8"
+    :schema="createTemplateValidator"
+    :state="state"
+    @submit="onSubmit"
+  >
     <UFormGroup label="Title" name="title" required>
-      <UInput v-model="state.title" />
+      <UInput v-model="state.title" type="text" placeholder="My Nuxt Template" />
     </UFormGroup>
-    <UFormGroup name="paidStatus" required>
+    <UFormGroup
+      label="Paid Status"
+      name="paidStatus"
+      help="A freemium template is free but has premium features. A premium template is paid."
+      required
+    >
       <URadioGroup
         v-model="state.paidStatus"
-        legend="Choose paid status"
-        :options="options"
+        :ui="{ fieldset: 'flex flex-row gap-4' }"
+        :options="paidStatusOptions"
         required
       />
     </UFormGroup>
-    <UFormGroup label="Category" name="categoryId" required>
-      <USelectMenu
-        v-model="state.categoryId"
-        option-attribute="name"
-        value-attribute="id"
-        :options="categories"
+    <div class="contents md:grid md:grid-cols-2 md:gap-8">
+      <UFormGroup label="Category" name="categoryId" required>
+        <USelectMenu
+          v-model="state.categoryId"
+          option-attribute="name"
+          value-attribute="id"
+          :options="categories"
+          placeholder="Select a category"
+        />
+      </UFormGroup>
+    </div>
+    <div class="contents md:grid md:grid-cols-2 md:gap-8">
+      <UFormGroup
+        label="Live Url"
+        name="liveUrl"
+        help="A URL where user can see the template in action."
+      >
+        <UInput
+          v-model="state.liveUrl"
+          type="url"
+          placeholder="https://example.com/preview"
+        />
+      </UFormGroup>
+      <UFormGroup
+        :label="isPremium ? 'Purchase URL' : 'Public Repo URL'"
+        name="accessUrl"
+        help="A URL where user can access the template."
+        required
+      >
+        <UInput
+          v-model="state.accessUrl"
+          type="url"
+          :placeholder="
+            isPremium
+              ? 'https://stripe.com/me/template'
+              : 'https://github.com/KKDesire/orion-dev'
+          "
+        />
+      </UFormGroup>
+    </div>
+
+    <UFormGroup
+      label="Short Description"
+      name="shortDescription"
+      :hint="`${
+        state.shortDescription?.length || 0
+      }/${TEMPLATE_MAX_SHORT_DESCRIPTION_LENGTH} characters`"
+      help="A short description for SEO and list page."
+      required
+    >
+      <UTextarea
+        v-model="state.shortDescription"
+        placeholder="Concisely describe your template..."
+        :rows="5"
       />
     </UFormGroup>
-    <UFormGroup label="Live Url" name="liveUrl">
-      <UInput v-model="state.liveUrl" type="url" />
+    <UFormGroup
+      label="Description"
+      name="description"
+      :hint="`${state.description?.length || 0}/${TEMPLATE_MAX_DESCRIPTION_LENGTH} characters`"
+    >
+      <div id="editor" />
     </UFormGroup>
-    <UFormGroup label="access Url" name="accessUrl" required>
-      <UInput v-model="state.accessUrl" type="url" />
-    </UFormGroup>
-    <UFormGroup label="Description" name="description" required>
-      <UTextarea v-model="state.description" />
-    </UFormGroup>
-    <UFormGroup>
+    <div class="flex flex-row justify-end gap-4">
+      <UButton
+        variant="ghost"
+        color="gray"
+        type="reset"
+        @click="onReset()"
+      >
+        Reset
+      </UButton>
       <UButton :loading="loading" type="submit">
         Submit
       </UButton>
-    </UFormGroup>
+    </div>
   </UForm>
 </template>
