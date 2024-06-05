@@ -1,5 +1,13 @@
 <script lang="ts" setup>
+import type { Template, Category, User } from '~/server/utils/drizzle'
+
+interface TemplatesCustom extends Template {
+  category: Category
+  creator: User
+  featuredImage: string
+}
 const { user } = useUserSession()
+
 definePageMeta({
   middleware: ['auth'],
 })
@@ -10,7 +18,7 @@ useSeoMeta({
 
 const whatIsTemplateModal = ref(false)
 
-const { data: templates } = await useFetch<any>(`/api/me/templates`, {
+const { data: templates } = await useFetch<TemplatesCustom[]>(`/api/me/templates`, {
   deep: false,
   default: () => [],
 })
@@ -26,7 +34,11 @@ const { data: templates } = await useFetch<any>(`/api/me/templates`, {
               class="dark:bg-opacity-20 dark:bg-gray-800"
               :ui="{ body: { base: 'flex flex-row items-center gap-4' } }"
             >
-              <UAvatar :src="user.avatarUrl" :alt="user.name ?? user.login" size="lg" />
+              <UAvatar
+                :src="user.avatarUrl"
+                :alt="user.name ?? user.login"
+                size="lg"
+              />
               <div class="flex flex-col">
                 <p class="font-semibold">
                   {{ user.name ?? user.login }}
@@ -88,7 +100,10 @@ const { data: templates } = await useFetch<any>(`/api/me/templates`, {
                 No templates found.
               </p>
               <div class="flex flex-row justify-center items-center gap-2">
-                <UButton to="/templates/new" color="black">
+                <UButton
+                  to="/templates/new"
+                  color="black"
+                >
                   Submit a template
                 </UButton>
                 <UTooltip text="Explanation">
@@ -118,7 +133,10 @@ const { data: templates } = await useFetch<any>(`/api/me/templates`, {
       >
         <template #header>
           <h2 class="font-semibold text-lg flex items-center justify-center">
-            <UIcon name="i-heroicons-information-circle" class="mr-2" />
+            <UIcon
+              name="i-heroicons-information-circle"
+              class="mr-2"
+            />
             What is a template?
           </h2>
           <UButton
@@ -129,7 +147,7 @@ const { data: templates } = await useFetch<any>(`/api/me/templates`, {
             @click="whatIsTemplateModal = false"
           />
         </template>
-         <p>
+        <p>
           A template is a sample of an website or webapp with some details already in place. In the case of Orion, template are built around <a
             href="https://nuxt.com"
             target="_blank"

@@ -1,8 +1,7 @@
 import { z } from 'zod'
 import sanitizeHtml from 'sanitize-html'
 import { useHash } from '~/server/utils/hash'
-import { PAID_STATUS } from '~/utils/constants'
-import { TEMPLATE_MAX_DESCRIPTION_LENGTH, TEMPLATE_MAX_SHORT_DESCRIPTION_LENGTH } from '~/utils/templates'
+import { PAID_STATUS, TEMPLATE_MAX_SHORT_DESCRIPTION_LENGTH, TEMPLATE_MAX_DESCRIPTION_LENGTH } from '~/utils/constants'
 
 export default defineEventHandler(async (event) => {
   const db = useDrizzle()

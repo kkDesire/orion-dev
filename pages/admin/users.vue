@@ -51,7 +51,10 @@ defineShortcuts({
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="User" :badge="users.length">
+      <UDashboardNavbar
+        title="User"
+        :badge="users.length"
+      >
         <template #right>
           <div class="flex gap-3">
             <UInput
@@ -67,7 +70,10 @@ defineShortcuts({
                 <UKbd value="/" />
               </template>
             </UInput>
-            <RefreshButton :loading="pending" @click="refresh" />
+            <RefreshButton
+              :loading="pending"
+              @click="refresh"
+            />
           </div>
         </template>
       </UDashboardNavbar>
@@ -86,7 +92,11 @@ defineShortcuts({
           </USelectMenu>
         </template>
       </UDashboardToolbar>
-      <UTable :columns="columns" :rows="users" :loading="pending">
+      <UTable
+        :columns="columns"
+        :rows="users"
+        :loading="pending"
+      >
         <template #login-data="{ row }">
           <div class="flex flex-row items-center gap-2">
             <img

@@ -53,13 +53,31 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-    <UFormGroup label="Nom" name="name">
+  <UForm
+    :schema="schema"
+    :state="state"
+    class="space-y-4"
+    @submit="onSubmit"
+  >
+    <UFormGroup
+      label="Nom"
+      name="name"
+    >
       <UInput v-model="state.name" />
     </UFormGroup>
     <div class="flex justify-end gap-3">
-      <UButton label="Cancel" color="gray" variant="ghost" @click="emits('close')" />
-      <UButton :loading="loading" type="submit" label="Add category" color="primary" />
+      <UButton
+        label="Cancel"
+        color="gray"
+        variant="ghost"
+        @click="emits('close')"
+      />
+      <UButton
+        :loading="loading"
+        type="submit"
+        label="Add category"
+        color="primary"
+      />
     </div>
   </UForm>
 </template>

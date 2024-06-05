@@ -67,7 +67,10 @@ const filteredCategories = computed(() => {
       {{ shortcuts ? "Shortcuts" : "Help & Support" }}
     </template>
 
-    <div v-if="shortcuts" class="space-y-6">
+    <div
+      v-if="shortcuts"
+      class="space-y-6"
+    >
       <UInput
         v-model="query"
         icon="i-heroicons-magnifying-glass"
@@ -76,7 +79,10 @@ const filteredCategories = computed(() => {
         color="gray"
       />
 
-      <div v-for="(category, index) in filteredCategories" :key="index">
+      <div
+        v-for="(category, index) in filteredCategories"
+        :key="index"
+      >
         <p class="mb-3 text-sm text-gray-900 dark:text-white font-semibold">
           {{ category.title }}
         </p>
@@ -90,7 +96,10 @@ const filteredCategories = computed(() => {
             <span class="text-sm text-gray-500 dark:text-gray-400">{{ item.name }}</span>
 
             <div class="flex items-center justify-end flex-shrink-0 gap-0.5">
-              <UKbd v-for="(shortcut, j) in item.shortcuts" :key="j">
+              <UKbd
+                v-for="(shortcut, j) in item.shortcuts"
+                :key="j"
+              >
                 {{ shortcut }}
               </UKbd>
             </div>
@@ -98,8 +107,16 @@ const filteredCategories = computed(() => {
         </div>
       </div>
     </div>
-    <div v-else class="flex flex-col gap-y-3">
-      <UButton v-for="(link, index) in links" :key="index" color="white" v-bind="link" />
+    <div
+      v-else
+      class="flex flex-col gap-y-3"
+    >
+      <UButton
+        v-for="(link, index) in links"
+        :key="index"
+        color="white"
+        v-bind="link"
+      />
     </div>
   </UDashboardSlideover>
 </template>

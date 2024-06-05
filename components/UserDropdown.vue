@@ -54,7 +54,10 @@ const items = computed(() => [
         <p>
           Signed in as
         </p>
-        <p v-if="user" class="truncate font-medium text-gray-900 dark:text-white">
+        <p
+          v-if="user"
+          class="truncate font-medium text-gray-900 dark:text-white"
+        >
           {{ user.name ?? user.login }}
         </p>
       </div>

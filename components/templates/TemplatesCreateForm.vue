@@ -3,6 +3,7 @@ import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 import 'quill/dist/quill.snow.css'
 import '~/assets/css/quill.css'
+import type { Module } from '~/server/utils/drizzle'
 
 const toast = useToast()
 const loading = ref<boolean>(false)
@@ -10,6 +11,7 @@ const loading = ref<boolean>(false)
 const schema = z.object({
   title: z.string({ message: 'Title is required' }),
   categoryId: z.string({ message: 'Category is required', coerce: true }),
+  moduleId: z.string({ message: 'Category is required', coerce: true }),
   paidStatus: z.enum(PAID_STATUS, { message: 'Paid status is required' }),
   liveUrl: z.string().optional(),
   accessUrl: z.string({ message: 'Access URL is required' }),
@@ -24,6 +26,7 @@ const state = reactive<{
   title: string | undefined
   paidStatus: typeof PAID_STATUS[number] | undefined
   categoryId: string | undefined
+  moduleIds: number[] | undefined
   liveUrl: string | undefined
   accessUrl: string | undefined
   shortDescription: string
@@ -34,6 +37,7 @@ const state = reactive<{
   paidStatus: undefined,
   liveUrl: undefined,
   accessUrl: undefined,
+  moduleIds: [],
   shortDescription: '',
   description: '',
 })
@@ -71,6 +75,16 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 const isPremium = computed(() => state.paidStatus === 'premium')
 
+const { data: modules } = await useFetch<Module[]>('/api/modules', {
+  deep: false,
+  default: () => [],
+  transform: (data) => {
+    /**
+     * Order by name nd then by type (community or official)
+     */
+    return data.sort((a, b) => a.name.localeCompare(b.name)).sort((a, b) => b.type.localeCompare(a.type))
+  },
+})
 const { data: categories } = await useFetch('/api/categories', {
   deep: false,
   default: () => [],
@@ -86,11 +100,10 @@ async function onReset() {
 }
 
 watch(quill, () => {
-  quill.value?.on('text-change', (_, __, source) => {
-    if (source === 'api') {
-      state.description = quill.value?.root.innerHTML ?? ''
-      form.value.validate('description', { silent: true })
-    }
+  quill.value?.on('text-change', (_: undefined, __: undefined, source: string) => {
+    if (source === 'api') return
+    state.description = quill.value?.root.innerHTML ?? ''
+    form.value.validate('description', { silent: true })
   })
 })
 </script>
@@ -103,8 +116,16 @@ watch(quill, () => {
     :state="state"
     @submit="onSubmit"
   >
-    <UFormGroup label="Title" name="title" required>
-      <UInput v-model="state.title" type="text" placeholder="My Nuxt Template" />
+    <UFormGroup
+      label="Title"
+      name="title"
+      required
+    >
+      <UInput
+        v-model="state.title"
+        type="text"
+        placeholder="My Nuxt Template"
+      />
     </UFormGroup>
     <UFormGroup
       label="Paid Status"
@@ -120,7 +141,11 @@ watch(quill, () => {
       />
     </UFormGroup>
     <div class="contents md:grid md:grid-cols-2 md:gap-8">
-      <UFormGroup label="Category" name="categoryId" required>
+      <UFormGroup
+        label="Category"
+        name="categoryId"
+        required
+      >
         <USelectMenu
           v-model="state.categoryId"
           option-attribute="name"
@@ -128,6 +153,33 @@ watch(quill, () => {
           :options="categories"
           placeholder="Select a category"
         />
+      </UFormGroup>
+      <UFormGroup
+        label="Modules"
+        name="moduleId"
+        required
+      >
+        <USelectMenu
+          v-model="state.moduleIds"
+          option-attribute="name"
+          value-attribute="id"
+          multiple
+          :options="modules"
+          placeholder="Select one or multiple modules"
+        >
+          <template #option="{ option }">
+            <img
+              v-if="option.icon"
+              :src="`${MODULE_ICON_PREFIX}/${option.icon}`"
+              class="h-4 w-auto"
+            >
+            <span
+              v-else
+              class="i-heroicons-photo inline-block h-4 w-4"
+            />
+            <span>{{ option.name }}</span>
+          </template>
+        </USelectMenu>
       </UFormGroup>
     </div>
     <div class="contents md:grid md:grid-cols-2 md:gap-8">
@@ -191,7 +243,10 @@ watch(quill, () => {
       >
         Reset
       </UButton>
-      <UButton :loading="loading" type="submit">
+      <UButton
+        :loading="loading"
+        type="submit"
+      >
         Submit
       </UButton>
     </div>

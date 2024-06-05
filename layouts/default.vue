@@ -8,7 +8,7 @@ const socials = [{
   target: '_blank',
 }, {
   title: 'GitHub',
-  icon: 'grommet-icons:github',
+  icon: 'i-grommet-icons-github',
   to: 'https://github.com/kkDesire',
   target: '_blank',
 }]

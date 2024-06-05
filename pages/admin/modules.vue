@@ -17,6 +17,10 @@ const defaultColumns = [
     sortable: true,
   },
   {
+    key: 'slug',
+    label: 'Slug',
+  },
+  {
     key: 'icon',
     label: 'Icon',
   },
@@ -45,7 +49,7 @@ const fetch_module_loading = ref<boolean>(false)
 const input = ref<{ input: HTMLInputElement }>()
 const toast = useToast()
 const { data: modules, pending, refresh } = await useFetch<Module[]>(
-  '/api/modules/fetch',
+  '/api/modules',
   {
     deep: false,
     lazy: true,
@@ -59,7 +63,7 @@ const { data: modules, pending, refresh } = await useFetch<Module[]>(
 async function fetchModules() {
   fetch_module_loading.value = true
   try {
-    await $fetch('/api/modules/fetch', {
+    await $fetch('/api/modules/sync', {
       method: 'POST',
     })
 
@@ -94,7 +98,10 @@ defineShortcuts({
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Modules" :badge="modules.length">
+      <UDashboardNavbar
+        title="Modules"
+        :badge="modules.length"
+      >
         <template #right>
           <UButton
             :loading="fetch_module_loading"
@@ -102,7 +109,10 @@ defineShortcuts({
             label="Fetch modules"
             @click="fetchModules"
           />
-          <RefreshButton :loading="pending" @click="refresh" />
+          <RefreshButton
+            :loading="pending"
+            @click="refresh"
+          />
         </template>
       </UDashboardNavbar>
       <UDashboardToolbar>
@@ -122,15 +132,22 @@ defineShortcuts({
           </div>
         </template>
       </UDashboardToolbar>
-      <UTable :columns="columns" :rows="modules" :loading="pending">
+      <UTable
+        :columns="columns"
+        :rows="modules"
+        :loading="pending"
+      >
         <template #icon-data="{ row }">
           <img
             v-if="row.icon"
-            :src="`https://raw.githubusercontent.com/nuxt/modules/main/icons/${row.icon}`"
+            :src="`${MODULE_ICON_PREFIX}/${row.icon}`"
             class="w-10 h-auto rounded"
             :alt="`${row.icon} Avatar`"
           >
-          <span v-else class="i-heroicons-photo inline-block w-10 h-10 rounded" />
+          <span
+            v-else
+            class="i-heroicons-photo inline-block w-10 h-10 rounded"
+          />
         </template>
         <template #type-data="{ row }">
           <UBadge

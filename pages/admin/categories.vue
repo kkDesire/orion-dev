@@ -74,7 +74,10 @@ defineShortcuts({
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Categories" :badge="categories.length">
+      <UDashboardNavbar
+        title="Categories"
+        :badge="categories.length"
+      >
         <template #right>
           <UButton
             trailing-icon="i-heroicons-plus"
@@ -103,7 +106,11 @@ defineShortcuts({
           </USelectMenu>
         </template>
       </UDashboardToolbar>
-      <UTable :columns="columns" :rows="categories" :loading="pending">
+      <UTable
+        :columns="columns"
+        :rows="categories"
+        :loading="pending"
+      >
         <template #actions-data="{ row }">
           <UDropdown :items="actionsItems(row)">
             <UButton
@@ -130,7 +137,11 @@ defineShortcuts({
         :ui="{ width: 'sm:max-w-md' }"
       >
         <!-- ~/components/users/UsersForm.vue -->
-        <CategoriesEditForm v-if="editCategory" :category="editCategory" @close="handleCloseEditModal" />
+        <CategoriesEditForm
+          v-if="editCategory"
+          :category="editCategory"
+          @close="handleCloseEditModal"
+        />
       </UDashboardModal>
     </UDashboardPanel>
   </UDashboardPage>

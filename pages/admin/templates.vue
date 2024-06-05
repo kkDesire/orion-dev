@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { Template } from '~/server/utils/drizzle'
-
 definePageMeta({
   layout: 'admin',
   middleware: ['admin'],
@@ -77,10 +75,20 @@ useSeoMeta({
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Templates" :badge="templates.length">
+      <UDashboardNavbar
+        title="Templates"
+        :badge="templates.length"
+      >
         <template #right>
-          <UButton trailing-icon="i-heroicons-plus" color="gray" label="New template" />
-          <RefreshButton :loading="pending" @click="refresh" />
+          <UButton
+            trailing-icon="i-heroicons-plus"
+            color="gray"
+            label="New template"
+          />
+          <RefreshButton
+            :loading="pending"
+            @click="refresh"
+          />
         </template>
       </UDashboardNavbar>
       <UDashboardToolbar>
@@ -98,7 +106,11 @@ useSeoMeta({
           </USelectMenu>
         </template>
       </UDashboardToolbar>
-      <UTable :columns="columns" :rows="templates" :loading="pending">
+      <UTable
+        :columns="columns"
+        :rows="templates"
+        :loading="pending"
+      >
         <template #paidStatus-data="{ row }">
           <UBadge
             :color="row.paidStatus === 'free' ? 'green' : 'yellow'"
