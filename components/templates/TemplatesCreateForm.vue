@@ -2,6 +2,7 @@
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 import { PAID_STATUS } from '~/server/utils/contants'
+import 'easymde/dist/easymde.min.css'
 
 const toast = useToast()
 const loading = ref<boolean>(false)
@@ -23,7 +24,7 @@ const state = reactive({
   paidStatus: undefined,
   liveUrl: undefined,
   accessUrl: undefined,
-  description: undefined,
+  description: '',
 })
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
@@ -70,6 +71,14 @@ const options = [
 const { data: categories } = await useFetch('/api/categories', {
   deep: false,
   default: () => [],
+})
+
+onMounted(async () => {
+  const EasyMDE = await import('easymde').then(m => m.default)
+  const easyMDE = new EasyMDE()
+  easyMDE.codemirror.on('change', () => {
+    state.description = easyMDE.value()
+  })
 })
 </script>
 

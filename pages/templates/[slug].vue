@@ -12,7 +12,9 @@ const { data: template } = await useFetch(`/api/templates/${hash.value}`, {
 <template>
   <article v-if="template" class="prose dark:prose-invert">
     <h1>{{ template.title }}</h1>
-    <p v-html="template.description" />
+    <ClientOnly>
+      <p v-html="template.description" />
+    </ClientOnly>
   </article>
 </template>
 
