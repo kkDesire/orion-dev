@@ -4,6 +4,7 @@ export default defineEventHandler(async () => {
   const templates = await db.select({
     id: tables.templates.id,
     title: tables.templates.title,
+    shortDescription: tables.templates.shortDescription,
     description: tables.templates.description,
     status: tables.templates.status,
     paidStatus: tables.templates.paidStatus,

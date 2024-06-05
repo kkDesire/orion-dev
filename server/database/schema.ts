@@ -1,6 +1,6 @@
 import { relations } from 'drizzle-orm'
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { PAID_STATUS, ROLE_TYPE, STATUS } from '../utils/contants'
+import { PAID_STATUS, ROLE_TYPE, STATUS } from '../../utils/constants'
 
 export const users = sqliteTable('users', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -37,17 +37,12 @@ export const templates = sqliteTable('templates', {
   hash: text('name').notNull().unique(),
   slug: text('slug').notNull(),
   title: text('title').notNull(),
-  /**
-   * Submitted: when a user submits a template
-   * Refused: when a user's template is refused by an admin
-   * Validate: when a user's template is validated by an admin and visible by everyone
-   */
   status: text('status', { enum: STATUS }).notNull().default('submitted'),
   paidStatus: text('paid_status', { enum: PAID_STATUS }).notNull().default('free'),
   liveUrl: text('live_url'),
   accessUrl: text('access_url').notNull(),
-  descriptionHTML: text('description_html').notNull(),
-  description: text('description').notNull(),
+  shortDescription: text('short_description').notNull(),
+  description: text('description'),
   userId: integer('user_id').notNull().references(() => users.id),
   categoryId: integer('category_id').notNull().references(() => categories.id),
   createdAt: text('created_at').notNull().$defaultFn(() => sql`(current_timestamp)`),

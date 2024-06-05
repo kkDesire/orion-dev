@@ -34,7 +34,7 @@ const defaultColumns = [
     label: 'Access Url',
   },
   {
-    key: 'description',
+    key: 'shortDescription',
     label: 'Description',
   },
   {

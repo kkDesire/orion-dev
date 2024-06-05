@@ -115,9 +115,9 @@ if (user.value?.roleType === 'admin') {
         </div>
         <p class="italic text-sm opacity-60 text-right">
           Built by <a
-            href="https://soubiran.dev"
+            href="https://github.com/KKDesire"
             target="_blank"
-          >Estéban (Barbapapazes) S</a>
+          >Désiré (KKDesire) K</a>
         </p>
       </template>
     </UFooter>

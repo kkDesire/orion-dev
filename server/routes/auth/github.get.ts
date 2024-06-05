@@ -40,7 +40,7 @@ export default oauth.githubEventHandler({
         roleType: user.roleType || 'creator',
       },
     })
-    return sendRedirect(event, '/portal')
+    return sendRedirect(event, '/profile')
   },
   onError(event, error) {
     console.error('Github OAuth error: ', error)
