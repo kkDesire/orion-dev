@@ -69,6 +69,9 @@ importers:
       '@iconify/json':
         specifier: ^2.2.216
         version: 2.2.216
+      '@types/sanitize-html':
+        specifier: ^2.11.0
+        version: 2.11.0
       drizzle-kit:
         specifier: ^0.21.4
         version: 0.21.4
@@ -1826,6 +1829,9 @@ packages:
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
+
+  '@types/sanitize-html@2.11.0':
+    resolution: {integrity: sha512-7oxPGNQHXLHE48r/r/qjn7q0hlrs3kL7oZnGj0Wf/h9tj/6ibFyRkNbsDxaBBZ4XUZ0Dx5LGCyDJ04ytSofacQ==}
 
   '@types/tern@0.23.9':
     resolution: {integrity: sha512-ypzHFE/wBzh+BlH6rrBgS5I/Z7RD21pGhZ2rltb/+ZrVM1awdZwjx7hE5XfuYgHWk9uvV5HLZN3SloevCAp3Bw==}
@@ -7812,6 +7818,10 @@ snapshots:
   '@types/normalize-package-data@2.4.4': {}
 
   '@types/resolve@1.20.2': {}
+
+  '@types/sanitize-html@2.11.0':
+    dependencies:
+      htmlparser2: 8.0.2
 
   '@types/tern@0.23.9':
     dependencies:
