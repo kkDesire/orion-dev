@@ -49,6 +49,19 @@ export const templates = sqliteTable('templates', {
   updatedAt: text('updated_at').notNull().$defaultFn(() => sql`(current_timestamp)`).$onUpdateFn(() => sql`(current_timestamp)`),
 })
 
+export const modulesToTemplates = sqliteTable('thems_to_modules', {
+  moduleId: integer('module_id').notNull().references(() => modules.id),
+  templateId: integer('template_id').notNull().references(() => templates.id),
+})
+
+// export const templateRelation = relations(templates, ({ many }) => ({
+//   modulesToTemplates: many(modulesToTemplates),
+// }))
+
+// export const moduleRelation = relations(modules, ({ many }) => ({
+//   modulesToTemplates: many(modulesToTemplates),
+// }))
+
 export const usersRelation = relations(users, ({ many }) => ({
   templates: many(templates),
 }))
