@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { z } from 'zod'
+import type { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 import 'quill/dist/quill.snow.css'
 import '~/assets/css/quill.css'
@@ -8,18 +8,7 @@ import type { Module } from '~/server/utils/drizzle'
 const toast = useToast()
 const loading = ref<boolean>(false)
 
-const schema = z.object({
-  title: z.string({ message: 'Title is required' }),
-  categoryId: z.string({ message: 'Category is required', coerce: true }),
-  moduleId: z.string({ message: 'Category is required', coerce: true }),
-  paidStatus: z.enum(PAID_STATUS, { message: 'Paid status is required' }),
-  liveUrl: z.string().optional(),
-  accessUrl: z.string({ message: 'Access URL is required' }),
-  description: z.string({ message: 'Description is required' }),
-  shortDescription: z.string().optional(),
-})
-
-type Schema = z.output<typeof schema>
+type Schema = z.output<typeof createTemplateValidator>
 const form = ref()
 
 const state = reactive<{
@@ -46,17 +35,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   // Do something with data
   try {
     loading.value = true
-    const result = await $fetch('/api/templates', {
+    await $fetch('/api/templates', {
       method: 'POST',
       body: event.data,
     })
-    if (result) {
-      toast.add({
-        icon: 'i-heroicons-check-circle',
-        title: `Template "${event.data.title}" has been created`,
-        color: 'green',
-      })
-    }
+    toast.add({
+      icon: 'i-heroicons-check-circle',
+      title: `Template "${event.data.title}" has been created`,
+      color: 'green',
+    })
     loading.value = false
   }
   catch (error) {
@@ -157,7 +144,6 @@ watch(quill, () => {
       <UFormGroup
         label="Modules"
         name="moduleId"
-        required
       >
         <USelectMenu
           v-model="state.moduleIds"

@@ -35,7 +35,7 @@ export const modules = sqliteTable('modules', {
 
 export const templates = sqliteTable('templates', {
   id: integer('id').primaryKey({ autoIncrement: true }),
-  hash: text('name').notNull().unique(),
+  hash: text('hash').notNull().unique(),
   slug: text('slug').notNull(),
   title: text('title').notNull(),
   status: text('status', { enum: STATUS }).notNull().default('submitted'),
@@ -44,29 +44,48 @@ export const templates = sqliteTable('templates', {
   accessUrl: text('access_url').notNull(),
   shortDescription: text('short_description').notNull(),
   description: text('description'),
-  userId: integer('user_id').notNull().references(() => users.id),
+  creatorId: integer('creatorId').notNull().references(() => users.id),
   categoryId: integer('category_id').notNull().references(() => categories.id),
   createdAt: text('created_at').notNull().$defaultFn(() => sql`(current_timestamp)`),
   updatedAt: text('updated_at').notNull().$defaultFn(() => sql`(current_timestamp)`).$onUpdateFn(() => sql`(current_timestamp)`),
 })
 
-export const modulesToTemplates = sqliteTable('thems_to_modules', {
-  moduleId: integer('module_id').notNull().references(() => modules.id),
-  templateId: integer('template_id').notNull().references(() => templates.id),
-})
-
-// export const templateRelation = relations(templates, ({ many }) => ({
-//   modulesToTemplates: many(modulesToTemplates),
-// }))
-
-// export const moduleRelation = relations(modules, ({ many }) => ({
-//   modulesToTemplates: many(modulesToTemplates),
-// }))
-
 export const usersRelation = relations(users, ({ many }) => ({
   templates: many(templates),
 }))
 
-export const categoryRelation = relations(categories, ({ many }) => ({
+export const categoriesRelation = relations(categories, ({ many }) => ({
   templates: many(modules),
 }))
+
+export const modulesToTemplates = sqliteTable('modules_to_templates', {
+  moduleId: integer('module_id').notNull().references(() => modules.id),
+  templateId: integer('template_id').notNull().references(() => templates.id),
+})
+
+export const templateRelation = relations(templates, ({ one, many }) => ({
+  creator: one(users, {
+    fields: [templates.categoryId],
+    references: [users.id],
+  }),
+  category: one(categories, {
+    fields: [templates.categoryId],
+    references: [categories.id],
+  }),
+  modules: many(modulesToTemplates),
+}))
+
+export const modulesTotemplatesRelation = relations(modulesToTemplates, ({ one }) => ({
+  module: one(modules, {
+    fields: [modulesToTemplates.moduleId],
+    references: [modules.id],
+  }),
+  template: one(templates, {
+    fields: [modulesToTemplates.templateId],
+    references: [templates.id],
+  }),
+}))
+
+// export const moduleRelation = relations(modules, ({ many }) => ({
+//   modulesToTemplates: many(modulesToTemplates),
+// }))
