@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "8be64ffe-cb92-4c9d-b216-84cfe24477b3",
+  "id": "e1ab1e89-8f48-4979-80a1-1f0a5240745c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "categories": {
@@ -268,8 +268,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "creatorId": {
-          "name": "creatorId",
+        "creator_id": {
+          "name": "creator_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -307,12 +307,12 @@
         }
       },
       "foreignKeys": {
-        "templates_creatorId_users_id_fk": {
-          "name": "templates_creatorId_users_id_fk",
+        "templates_creator_id_users_id_fk": {
+          "name": "templates_creator_id_users_id_fk",
           "tableFrom": "templates",
           "tableTo": "users",
           "columnsFrom": [
-            "creatorId"
+            "creator_id"
           ],
           "columnsTo": [
             "id"

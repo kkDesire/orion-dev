@@ -35,11 +35,11 @@ CREATE TABLE `templates` (
 	`access_url` text NOT NULL,
 	`short_description` text NOT NULL,
 	`description` text,
-	`creatorId` integer NOT NULL,
+	`creator_id` integer NOT NULL,
 	`category_id` integer NOT NULL,
 	`created_at` text NOT NULL,
 	`updated_at` text NOT NULL,
-	FOREIGN KEY (`creatorId`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`creator_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint

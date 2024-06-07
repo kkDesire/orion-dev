@@ -44,7 +44,7 @@ export const templates = sqliteTable('templates', {
   accessUrl: text('access_url').notNull(),
   shortDescription: text('short_description').notNull(),
   description: text('description'),
-  creatorId: integer('creatorId').notNull().references(() => users.id),
+  creatorId: integer('creator_id').notNull().references(() => users.id),
   categoryId: integer('category_id').notNull().references(() => categories.id),
   createdAt: text('created_at').notNull().$defaultFn(() => sql`(current_timestamp)`),
   updatedAt: text('updated_at').notNull().$defaultFn(() => sql`(current_timestamp)`).$onUpdateFn(() => sql`(current_timestamp)`),
@@ -65,14 +65,14 @@ export const modulesToTemplates = sqliteTable('modules_to_templates', {
 
 export const templateRelation = relations(templates, ({ one, many }) => ({
   creator: one(users, {
-    fields: [templates.categoryId],
+    fields: [templates.creatorId],
     references: [users.id],
   }),
   category: one(categories, {
     fields: [templates.categoryId],
     references: [categories.id],
   }),
-  modules: many(modulesToTemplates),
+  module: many(modulesToTemplates),
 }))
 
 export const modulesTotemplatesRelation = relations(modulesToTemplates, ({ one }) => ({

@@ -45,6 +45,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       color: 'green',
     })
     loading.value = false
+    state.title = undefined
+    state.categoryId = undefined
+    state.moduleIds = []
+    state.liveUrl = undefined
+    state.accessUrl = undefined
+    state.paidStatus = undefined
+    state.shortDescription = ''
+    state.description = ''
   }
   catch (error) {
     loading.value = false
@@ -138,7 +146,7 @@ watch(quill, () => {
           option-attribute="name"
           value-attribute="id"
           :options="categories"
-          placeholder="Select a category"
+          placeholder="-- Select a category --"
         />
       </UFormGroup>
       <UFormGroup
@@ -151,7 +159,7 @@ watch(quill, () => {
           value-attribute="id"
           multiple
           :options="modules"
-          placeholder="Select one or multiple modules"
+          placeholder="-- Select one or multiple modules --"
         >
           <template #option="{ option }">
             <img

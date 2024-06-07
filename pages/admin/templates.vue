@@ -111,9 +111,39 @@ useSeoMeta({
         :rows="templates"
         :loading="pending"
       >
+        <template #liveUrl-data="{ row }">
+          <UButton
+            v-if="row.liveUrl"
+            variant="link"
+            target="_blank"
+            :to="row.liveUrl"
+            class="flex flex-row items-center gap-1"
+          >
+            <span>{{ row.liveUrl }}</span>
+
+            <span class="i-heroicons-arrow-top-right-on-square-16-solid inline-block w-4 h-4" />
+          </UButton>
+          <span v-else> - </span>
+        </template>
+        <template #accessUrl-data="{ row }">
+          <UButton
+            variant="link"
+            target="_blank"
+            :to="row.accessUrl"
+            class="flex flex-row items-center gap-1"
+          >
+            <span>{{ row.accessUrl }}</span>
+
+            <span class="i-heroicons-arrow-top-right-on-square-16-solid inline-block w-4 h-4" />
+          </UButton>
+        </template>
         <template #paidStatus-data="{ row }">
           <UBadge
-            :color="row.paidStatus === 'free' ? 'green' : 'yellow'"
+            :color="row.paidStatus === 'free'
+              ? 'green'
+              : row.paidStatus === 'freemium'
+                ? 'blue'
+                : 'yellow'"
             variant="subtle"
           >
             {{ row.paidStatus }}
@@ -122,11 +152,11 @@ useSeoMeta({
         <template #createdBy-data="{ row }">
           <div class="flex flex-row items-center gap-2">
             <img
-              :src="row.user.avatarUrl"
+              :src="row.creator.avatarUrl"
               class="w-6 h-6 rounded-full"
-              :alt="`${row.user.login} Avatar`"
+              :alt="`${row.creator.login} Avatar`"
             >
-            <span>{{ row.user.name ?? row.user.login }}</span>
+            <span>{{ row.creator.name ?? row.creator.login }}</span>
           </div>
         </template>
       </UTable>
